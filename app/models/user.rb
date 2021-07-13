@@ -8,6 +8,13 @@ class User < ApplicationRecord
          :rememberable, :validatable
 
   belongs_to :category, optional: true
+  has_many :doctor_appointments, class_name: 'Appointment', foreign_key: 'doctor_id'
+  has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'user_id'
+
+  has_many :patients, through: :doctor_appointments, class_name: 'User'
+  has_many :doctors, through: :patient_appointments, class_name: 'User'
+
+
   enum role: [ :user, :doctor, :admin ] 
 
   def self.find_first_by_auth_conditions(warden_conditions)
