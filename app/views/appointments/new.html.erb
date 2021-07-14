@@ -1,19 +1,38 @@
 <% @appointments.each do |appointment| %>
   <br>
+  status: <%= appointment.status %>
+  <br>
+  patient: <%= appointment.patient.full_name %>
+  <br>
   doctor: <%= appointment.doctor.full_name %>
+  <br>
+  <% if appointment.recomendation.present? %>
+    recomendation: <%= appointment.recomendation %>
+  <% end %>
   <br>
   created at: <%= appointment.created_at %>
   <br>
+  <% if can?(:finish, Appointment) && appointment.pending? %>
+    <%= form_with(model: appointment, url: finish_appointment_path(appointment)) do |form|%>
+      <%= form.label :recomendation %>
+      <br>
+      <%= form.text_area :recomendation %>
+      <br>
+      <%= form.submit 'Send recomendation' %>
+    <% end %>
+  <% end %>
   ========================
   <br>
 <% end %>
 
-Doctors for appointment:
-<% @doctors.each do |doctor|%>
-  <br>
-  doctor: <%= doctor.full_name %>
-  <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>
-    <%= form.hidden_field :doctor_id %>
-    <%= form.submit "Create appointment" %>
+<% if can?(:create, Appointment) %>
+  Doctors for appointment:
+  <% @doctors.each do |doctor|%>
+    <br>
+    doctor: <%= doctor.full_name %>
+    <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>
+      <%= form.hidden_field :doctor_id %>
+      <%= form.submit "Create appointment" %>
+    <% end %>
   <% end %>
 <% end %>

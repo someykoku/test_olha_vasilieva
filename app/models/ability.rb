@@ -10,8 +10,10 @@ class Ability
       can :manage, :dashboard
     end
     if user.doctor?
+      can :finish, Appointment
     end
     if user.user?
+      can :create, Appointment
     end
 
   end

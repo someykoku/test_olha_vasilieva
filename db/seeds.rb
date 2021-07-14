@@ -9,10 +9,10 @@ category1 = Category.create(name: 'therapist')
 category2 = Category.create(name: 'surgeon')
 
 
-admin = User.create(role: 'admin', mobile: '+380679438757', password: 'password', password_confirmation: 'password')
+admin = User.create(full_name: 'Mr. Admin', role: 'admin', mobile: '+380679438757', password: 'password', password_confirmation: 'password')
 doctor1 = User.create(full_name: 'Mr. Doctor1', role: 'doctor', mobile: '+380679438434', password: 'password', password_confirmation: 'password', category: category1)
 doctor2 = User.create(full_name: 'Mr. Doctor2', role: 'doctor', mobile: '+380679438534', password: 'password', password_confirmation: 'password', category: category2)
-patient = User.create(role: 'user', mobile: '+380679478434', password: 'password', password_confirmation: 'password')
+patient = User.create(full_name: 'Mr. Patient', role: 'user', mobile: '+380679478434', password: 'password', password_confirmation: 'password')
 
 
 Appointment.create(doctor: doctor1, patient: patient)

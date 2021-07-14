@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   root 'home#index'
   get 'appointments', to: 'appointments#new'
   post 'appointments', to: 'appointments#create', as: 'appointments_create'
+  patch 'appointments/:id/finish', to: 'appointments#finish', as: 'finish_appointment'
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
