@@ -1,0 +1,19 @@
+<% @appointments.each do |appointment| %>
+  <br>
+  doctor: <%= appointment.doctor.full_name %>
+  <br>
+  created at: <%= appointment.created_at %>
+  <br>
+  ========================
+  <br>
+<% end %>
+
+Doctors for appointment:
+<% @doctors.each do |doctor|%>
+  <br>
+  doctor: <%= doctor.full_name %>
+  <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>
+    <%= form.hidden_field :doctor_id %>
+    <%= form.submit "Create appointment" %>
+  <% end %>
+<% end %>

@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   
-
+  
   validates :mobile, uniqueness: true
   devise :database_authenticatable, :registerable,
          :rememberable, :validatable
@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :patients, through: :doctor_appointments, class_name: 'User'
   has_many :doctors, through: :patient_appointments, class_name: 'User'
 
+  scope :doctors, -> { where(role: 'doctor') }
+  scope :patients, -> { where(role: 'patient') }
 
   enum role: [ :user, :doctor, :admin ] 
 
