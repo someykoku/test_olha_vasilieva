@@ -7,6 +7,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :rememberable, :validatable
 
+  has_one_attached :avatar
+
   belongs_to :category, optional: true
   has_many :doctor_appointments, class_name: 'Appointment', foreign_key: 'doctor_id'
   has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'user_id'
