@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <% if current_user.present? %>
+    <% if current_user.present? && current_user.avatar.present?%>
       <%= image_tag(current_user.avatar) %> 
       <br>
     <% end %>
