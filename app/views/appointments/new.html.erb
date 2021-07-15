@@ -6,6 +6,8 @@
   <br>
   doctor: <%= appointment.doctor.full_name %>
   <br>
+  category: <%= appointment.doctor.category.name %>
+  <br>
   <% if appointment.recomendation.present? %>
     recomendation: <%= appointment.recomendation %>
   <% end %>
@@ -28,6 +30,8 @@
 <% if can?(:create, Appointment) %>
   Doctors for appointment:
   <% @doctors.each do |doctor|%>
+    <br>
+    category: <%= doctor.category.name %>
     <br>
     doctor: <%= doctor.full_name %>
     <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>

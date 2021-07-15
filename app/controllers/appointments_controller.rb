@@ -8,7 +8,7 @@ class AppointmentsController < ApplicationController
     raise "Operation not allowed!" unless can?(:create, Appointment)
     @appointment = current_user.appointments.create!(appointment_params)
     @appointments = current_user.appointments
-    @doctors = User.doctors
+    @doctors = User.doctors.order_by(:category_id)
     render 'new'
   end
 
