@@ -10,9 +10,7 @@ class AppointmentsController < ApplicationController
   def create
     raise "Operation not allowed!" unless can?(:create, Appointment)
     @appointment = current_user.appointments.create!(appointment_params)
-    @appointments = current_user.appointments
-    @doctors = User.doctors.order(:category_id)
-    render 'new'
+    redirect_to root_path  
   end
 
   def finish
