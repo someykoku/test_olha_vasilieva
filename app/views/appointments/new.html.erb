@@ -1,70 +1,42 @@
 <div class="container">
-  <h1>
-    Your appointments:
-  </h1>
-  <div class="row">
-    <% @appointments.each do |appointment| %>
-      <div class="col-md-4 card">
-        <div class="card-body">
-          <br>
-          status: <%= appointment.status %>
-          <br>
-          patient: <%= appointment.patient.full_name %>
-          <br>
-          doctor: <%= appointment.doctor.full_name %>
-          <br>
-          <% if appointment.doctor.avatar.present?%>
-            <%= image_tag(appointment.doctor.avatar.variant(resize_to_limit: [200, 200])) %> 
-          <% end %>
-          <br>
-          category: <%= appointment.doctor.category.name %>
-          <br>
-          <% if appointment.recomendation.present? %>
-            recomendation: <%= appointment.recomendation %>
-          <% end %>
-          <br>
-          created at: <%= appointment.created_at %>
-          <br>
-          <% if can?(:finish, Appointment) && appointment.pending? %>
-            <%= form_with(model: appointment, url: finish_appointment_path(appointment)) do |form|%>
-              <%= form.label :recomendation %>
-              <br>
-              <%= form.text_area :recomendation %>
-              <br>
-              
-              <%= form.submit 'Send recomendation', class: 'btn btn-primary' %>
-              
+  <% if can?(:create, Appointment) %>
+    <br>
+    <h1>
+      Create new appointment:
+    </h1>
+    <% @categories.each do |category|%>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-category-<%= category.id %>" aria-expanded="false" aria-controls="collapseTwo">
+              <h3><%= category.name%></h3>
+            </button>
+          </h2>
+          <div id="collapse-category-<%= category.id %>" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+            <% category.users.each do |doctor| %>
+              <div class="row">
+                <div class="col-md-4 card">
+                  <div class="card-body">
+                    doctor: <%= doctor.full_name %>
+                    <% if doctor.avatar.present?%>
+                      <br>
+                      <%= image_tag(doctor.avatar.variant(resize_to_limit: [200, 200])) %> 
+                    <% end %>
+                    <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>
+                      <%= form.hidden_field :doctor_id %>
+                      <br>
+                      <%= form.submit "Create appointment", class: 'btn btn-primary'%>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
             <% end %>
-          <% end %>
-          <br>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>
-  </div>
-  <div class="row">
-    <% if can?(:create, Appointment) %>
-        <br>
-        <h1>
-          Create new appointment:
-        </h1>
-        <% @doctors.each do |doctor| %>
-          <div class="col-md-4 card">
-            <div class="card-body">
-              category: <%= doctor.category.name %>
-              <br>
-              doctor: <%= doctor.full_name %>
-              <% if doctor.avatar.present?%>
-                <br>
-                <%= image_tag(doctor.avatar.variant(resize_to_limit: [200, 200])) %> 
-              <% end %>
-              <%= form_for Appointment.new(doctor: doctor, patient: current_user) do |form| %>
-                <%= form.hidden_field :doctor_id %>
-                <br>
-                <%= form.submit "Create appointment", class: 'btn btn-primary'%>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-    <% end %>
-  </div>
+  <% end %>
 </div>
+

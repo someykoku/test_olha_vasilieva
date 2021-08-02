@@ -4,13 +4,30 @@
   <%= bootstrap_devise_error_messages! %>
 
   <div class="form-group">
+    <%= f.label :full_name %>
+    <%= f.text_field :full_name, autofocus: true, autocomplete: 'full_name', class: 'form-control' %>
+  </div>
+  <br>
+
+  <div class="form-group">
     <%= f.label :mobile %>
     <%= f.telephone_field :mobile, autofocus: true, autocomplete: 'mobile', class: 'form-control' %>
   </div>
+  <br>
 
+  <div class="form-group">
+    <%= f.label :category_id %>
+    <%= f.select :category_id, Category.all.collect {|x| [x.name, x.id]}, {} %>
+  </div>
+  <br>
   
   <div class="form-group">
     <%= f.label :avatar %>
+    <br>
+    <% if current_user.avatar.present?%>
+      <%= image_tag(current_user.avatar.variant(resize_to_limit: [200, 200])) %> 
+    <% end %>
+    <br>
     <%= f.file_field :avatar, class: 'form-control' %>
   </div>
 

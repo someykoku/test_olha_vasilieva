@@ -1,7 +1,10 @@
 class AppointmentsController < ApplicationController
   def new
+    @categories = Category.eager_load(:users).all.distinct
+  end
+
+  def index
     @appointments = current_user.appointments
-    @doctors = User.doctors
   end
 
   def create

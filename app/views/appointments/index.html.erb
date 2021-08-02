@@ -1,0 +1,44 @@
+<div class="container">
+  <h1>
+    Your appointments:
+  </h1>
+  <div class="row">
+    <% @appointments.each do |appointment| %>
+      <div class="col-md-4 card">
+        <div class="card-body">
+          <br>
+          status: <%= appointment.status %>
+          <br>
+          patient: <%= appointment.patient.full_name %>
+          <br>
+          doctor: <%= appointment.doctor.full_name %>
+          <br>
+          <% if appointment.doctor.avatar.present?%>
+            <%= image_tag(appointment.doctor.avatar.variant(resize_to_limit: [200, 200])) %> 
+          <% end %>
+          <br>
+          category: <%= appointment.doctor.category.name %>
+          <br>
+          <% if appointment.recomendation.present? %>
+            recomendation: <%= appointment.recomendation %>
+          <% end %>
+          <br>
+          created at: <%= appointment.created_at %>
+          <br>
+          <% if can?(:finish, Appointment) && appointment.pending? %>
+            <%= form_with(model: appointment, url: finish_appointment_path(appointment)) do |form|%>
+              <%= form.label :recomendation %>
+              <br>
+              <%= form.text_area :recomendation %>
+              <br>
+              
+              <%= form.submit 'Send recomendation', class: 'btn btn-primary' %>
+              
+            <% end %>
+          <% end %>
+          <br>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
